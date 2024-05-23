@@ -5,7 +5,6 @@ function Home() {
   return (
     <div>
       <BannerCarousel />
-      {/* Otras secciones de la página de inicio */}
     </div>
   );
 }

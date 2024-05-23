@@ -1,44 +1,37 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import AuthContext from '../context/AuthContext';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function ReservedTutorias() {
-  // Datos ficticios de tutorías reservadas
-  const tutoriasReservadas = [
-    { id: 1, nombre: 'Tutoría de Matemáticas', lugar: 'Online', fecha: '2024-04-20', hora: '10:00 AM' },
-    { id: 2, nombre: 'Tutoría de Historia', lugar: 'Biblioteca', fecha: '2024-04-22', hora: '2:00 PM' },
-    { id: 3, nombre: 'Tutoría de Ciencias', lugar: 'Laboratorio', fecha: '2024-04-25', hora: '3:30 PM' }
-  ];
+  const { tutoriasReservadas, eliminarTutoria } = useContext(AuthContext);
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center mb-4">Lista de Tutorías Reservadas</h2>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Lugar</th>
-            <th>Fecha</th>
-            <th>Hora</th>
-          </tr>
-        </thead>
-        <tbody>
+    <div className="container mt-5"  style={{height:'80vh'}}>
+      <div className="row justify-content-center">
+        <div className="col-md-8">
           {tutoriasReservadas.map(tutoria => (
-            <tr key={tutoria.id}>
-              <td>{tutoria.id}</td>
-              <td>{tutoria.nombre}</td>
-              <td>{tutoria.lugar}</td>
-              <td>{tutoria.fecha}</td>
-              <td>{tutoria.hora}</td>
-            </tr>
+            <div key={tutoria.id} className="card mb-3" style={{ border: '1px solid #ccc' }}>
+              <div className="card-body">
+                <h5 className="card-title">{tutoria.title}</h5>
+                <p className="card-text">Localidad: {tutoria.locacion}</p>
+                <p className="card-text">Modalidad: {tutoria.modalidad}</p>
+                <p className="card-text">Precio: ${tutoria.precio}</p>
+                <div className="d-flex justify-content-end">
+                  <button className="btn btn-outline-danger me-2" onClick={() => eliminarTutoria(tutoria.id)} style={{ background: 'grey', color:'white', border:'none' }}>Eliminar</button>
+                  <Link to={`/pagar/${tutoria.id}`} className="btn btn-outline-primary" style={{ background: '#03d6b3',color:'white', border:'none' }}>Pagar</Link>
+                </div>
+              </div>
+            </div>
           ))}
-        </tbody>
-      </table>
-      <div className="text-center">
-        <button className="btn btn-primary">Pagar</button>
+        </div>
       </div>
     </div>
   );
 }
 
 export default ReservedTutorias;
+
+
+
+

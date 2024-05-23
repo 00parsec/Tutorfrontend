@@ -1,34 +1,68 @@
-import React, { createContext, useState, useContext } from 'react';
 
-// Creamos el contexto de autenticación
+import React, { createContext, useState, useContext, useEffect } from 'react';
+import axios from 'axios';
+
+
 const AuthContext = createContext();
 
-// Hook personalizado para acceder al contexto de autenticación
+
 export const useAuth = () => {
   return useContext(AuthContext);
 };
 
-// Proveedor de contexto de autenticación
+
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [tutoriasReservadas, setTutoriasReservadas] = useState([]);
 
-  // Función para iniciar sesión
+  useEffect(() => {
+    const fetchUser = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await axios.get('/api/profile', {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          setUser(response.data);
+        } catch (error) {
+          console.error('Error fetching user', error);
+          logout();
+        }
+      }
+      setLoading(false);
+    };
+    fetchUser();
+  }, []);
+
+
   const login = (userData) => {
     setUser(userData);
-    // Puedes almacenar el usuario en localStorage o realizar una llamada a un servidor para autenticar
+    localStorage.setItem('token', token);  
   };
 
-  // Función para cerrar sesión
+
   const logout = () => {
     setUser(null);
-    // Puedes limpiar localStorage u otros datos de sesión
+    localStorage.removeItem('token');
+    setTutoriasReservadas([]);
+    };
+  const addTutoria = (tutoria) => {
+    setTutoriasReservadas([...tutoriasReservadas, tutoria]);
+  };
+
+  const eliminarTutoria = (id) => {
+    setTutoriasReservadas(tutoriasReservadas.filter(tutoria => tutoria.id !== id));
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading, tutoriasReservadas, addTutoria, eliminarTutoria }}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext;
+
 
 

@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import TutoriaCard from '../components/TutoriaCard';
-import clasesData from '../data/clases.json'; // Importa los datos desde el archivo JSON
 
 function FilterSearch({ tutorias, onFilter }) {
   const [selectedOptions, setSelectedOptions] = useState([]);
 
   const handleFilterChange = (selectedOptions) => {
     setSelectedOptions(selectedOptions);
-    onFilter(selectedOptions); // Llama a la función onFilter cada vez que haya un cambio en las opciones seleccionadas
+    onFilter(selectedOptions); 
   };
 
   return (
@@ -38,11 +37,18 @@ function getOptionsFromTutorias(tutorias) {
 function Tutorias() {
   const [filteredTutorias, setFilteredTutorias] = useState([]);
   const [tutorias, setTutorias] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
-    // Cargar los datos desde clases.json al inicio
-    setTutorias(clasesData);
-    setFilteredTutorias(clasesData);
+
+    fetch('http://localhost:3000/api/tutorias')
+      .then(response => response.json())
+      .then(data => {
+        setTutorias(data);
+        setFilteredTutorias(data);
+      })
+      .catch(error => console.error('Error al obtener las tutorías:', error));
   }, []);
 
   const handleFilter = (selectedOptions) => {
@@ -56,21 +62,42 @@ function Tutorias() {
       );
     });
     setFilteredTutorias(filteredData);
+    setCurrentPage(1); 
+  };
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentTutorias = filteredTutorias.slice(indexOfFirstItem, indexOfLastItem);
+
+
+  const nextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+
+  const prevPage = () => {
+    setCurrentPage(currentPage - 1);
   };
 
   return (
-    <div>
-      <h2>Tutorías Disponibles</h2>
+    <div className="container py-2 px-0"  style={{height:'100%'}}> 
+      <h2 className="mb-2">Tutorías Disponibles</h2> 
       <FilterSearch tutorias={tutorias} onFilter={handleFilter} />
-      <div className="row">
-        {filteredTutorias.map((tutoria) => (
-          <div key={tutoria.id} className="col-md-4 mb-4">
+      <div className="row mx-0"> 
+        {currentTutorias.map((tutoria) => (
+          <div key={tutoria.id} className="col-md-4 px-2 mb-2"> 
             <TutoriaCard tutoria={tutoria} />
           </div>
         ))}
+         </div>
+      <div className="d-flex justify-content-center mt-4">
+        <button style={{ backgroundColor: '#5F5ED3', color:'white', border:'none' }} onClick={prevPage} disabled={currentPage === 1}>Página anterior</button>
+        <button style={{ backgroundColor: '#5F5ED3', color:'white', border:'none' }} onClick={nextPage} disabled={indexOfLastItem >= filteredTutorias.length}>Página siguiente</button>
       </div>
     </div>
+     
   );
 }
 
 export default Tutorias;
+
+

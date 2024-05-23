@@ -2,11 +2,16 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import { FaHome } from 'react-icons/fa'; 
+import { FaHome } from 'react-icons/fa';
 import logo from '../assets/LogoTutorTarea.png';
 
 function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogout = () => {
+   
+    setIsAuthenticated(false); 
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -30,7 +35,10 @@ function Navbar() {
                   <Link className="nav-link" to="/tutorias">Tutorías</Link>
                 </li>
                 <li className="nav-item">
-                  <Link className="nav-link" to="/login">Iniciar Sesión</Link>
+                  <Link className="nav-link" to="/profile">Perfil</Link>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link" href="http://localhost:5173/login">Cerrar Sesion</a>
                 </li>
               </>
             )}
@@ -45,6 +53,9 @@ function Navbar() {
                 <li className="nav-item">
                   <Link className="nav-link" to="/profile">Perfil</Link>
                 </li>
+                <li className="nav-item">
+                  <button className="btn btn-link nav-link" onClick={handleLogout}>Cerrar Sesión</button>
+                </li>
               </>
             )}
           </ul>
@@ -55,5 +66,3 @@ function Navbar() {
 }
 
 export default Navbar;
-
-

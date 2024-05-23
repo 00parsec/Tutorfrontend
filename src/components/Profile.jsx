@@ -1,43 +1,36 @@
 import React from 'react';
+import { useAuth } from '../context/AuthContext';
+import { Card, Container, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ReservedTutorias from './ReservedTutorias';
-import { Card, Row, Col } from 'react-bootstrap';
 
-function Profile() {
-  // Datos ficticios del usuario
-  const user = {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    image: "https://via.placeholder.com/150", // URL de la imagen del usuario
-  };
+const Profile = () => {
+  const { user } = useAuth();
+
+  if (!user) {
+    return <div>No profile data available</div>;
+  }
 
   return (
-    <div className="container mt-5">
+    <Container className="d-flex justify-content-center align-items-center" style={{ height: '80vh' }}>
       <Row>
-        <Col md={6}>
-          {/* Contenido del perfil */}
-          <h2>Perfil de Usuario</h2>
-          <Card style={{ width: '18rem' }}>
-            <Card.Img variant="top" src={user.image} />
+        <Col>
+          <Card className="text-center shadow-lg">
+            <Card.Header style={{ backgroundColor: '#03d6b3' }}>
+              <h1 style={{ color: 'white' }}>Bienvenido, {user.firstName}!</h1>
+            </Card.Header>
             <Card.Body>
-              <Card.Title>{user.name}</Card.Title>
               <Card.Text>
-                <strong>Email:</strong> {user.email}
+                Nos alegra tenerte aquí. Disfruta de nuestra plataforma y descubre todas las tutorías disponibles para ti.
               </Card.Text>
               <Card.Text>
-                <strong>Biografía:</strong> {user.bio}
+                Si necesitas ayuda, no dudes en contactarnos.
               </Card.Text>
             </Card.Body>
           </Card>
         </Col>
-        <Col md={6}>
-          {/* Contenido de las tutorías reservadas */}
-          <ReservedTutorias />
-        </Col>
       </Row>
-    </div>
+    </Container>
   );
-}
+};
 
 export default Profile;
