@@ -5,7 +5,8 @@ function TutoriaList() {
   const [tutorias, setTutorias] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/tutorias')
+   // fetch('http://localhost:3000/api/tutorias')
+    fetch('https://tutorbackend-fnxu.onrender.com/api/tutorias')
       .then(response => response.json())
       .then(data => setTutorias(data))
       .catch(error => console.error('Error al obtener las tutorías:', error));
