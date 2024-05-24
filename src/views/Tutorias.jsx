@@ -42,7 +42,7 @@ function Tutorias() {
 
   useEffect(() => {
 
-    fetch('http://localhost:3000/api/tutorias')
+    fetch('https://tutorbackend-fnxu.onrender.com/api/tutorias')
       .then(response => response.json())
       .then(data => {
         setTutorias(data);
