@@ -9,7 +9,7 @@ function TutoriaDetailPage() {
   const [tutoria, setTutoria] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:3000/api/tutorias/${id}`)
+    fetch(`https://tutorbackend-fnxu.onrender.com/api/tutorias/${id}`)
       .then(response => response.json())
       .then(data => {
         console.log('Tutoria obtenida:', data); 
