@@ -38,7 +38,7 @@ function Navbar() {
                   <Link className="nav-link" to="/profile">Perfil</Link>
                 </li>
                 <li className="nav-item">
-                  <a className="nav-link" href="http://localhost:5173/login">Cerrar Sesion</a>
+                  <a className="nav-link" href="https://fronttutor.onrender.com/">Cerrar Sesion</a>
                 </li>
               </>
             )}
