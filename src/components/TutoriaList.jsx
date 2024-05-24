@@ -5,7 +5,7 @@ function TutoriaList() {
   const [tutorias, setTutorias] = useState([]);
 
   useEffect(() => {
-   // fetch('http://localhost:3000/api/tutorias')
+    // Cambia la URL de la solicitud fetch al servidor en línea
     fetch('https://tutorbackend-fnxu.onrender.com/api/tutorias')
       .then(response => response.json())
       .then(data => setTutorias(data))
